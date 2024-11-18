@@ -60,5 +60,23 @@ export async function POST(req: Request) {
       username,
       email_addresses[0].email_address
     );
+
+    //call server action to create user to database
   }
+
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+    console.log("Our deleted user details", id);
+
+    //call server action to delete user from database
+  }
+
+  if (eventType === "user.updated") {
+    const { id } = evt.data;
+    console.log("Our updated user details", id);
+
+    //call server action to update user on the database
+  }
+
+  return new Response("everything good", { status: 200 });
 }
