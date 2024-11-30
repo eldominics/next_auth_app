@@ -64,7 +64,7 @@ export async function POST(req: Request) {
 
   if (eventType === "user.deleted") {
     const { id } = evt.data;
-    console.log("Our deleted user details", id);
+    console.log("Our deleted user details:", id);
 
     //call server action to delete user from database
 
