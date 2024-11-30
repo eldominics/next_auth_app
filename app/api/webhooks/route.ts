@@ -1,6 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { createUser } from "@/actions/user.action";
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
@@ -54,14 +55,13 @@ export async function POST(req: Request) {
 
   if (eventType === "user.created") {
     const { id, username, email_addresses } = evt.data;
-    console.log(
-      "Our user details",
-      id,
-      username,
-      email_addresses[0].email_address
-    );
 
     //call server action to create user to database
+    createUser({
+      username: username || "MyUser",
+      email: email_addresses[0].email_address,
+      clerkId: id,
+    });
   }
 
   if (eventType === "user.deleted") {
