@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const isConnected: boolean = false;
+let isConnected: boolean = false;
 export async function connectDB() {
   mongoose.set("strictQuery", true);
   if (!process.env.MONGODB_URL) {
@@ -13,6 +13,8 @@ export async function connectDB() {
     await mongoose.connect(process.env.MONGODB_URL!, {
       dbName: "AppUser",
     });
+
+    isConnected = true;
   } catch (error) {
     console.log(error);
   }
