@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser } from "@/actions/user.action";
+import { createUser, deleteUser, updateUser } from "@/actions/user.action";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -72,13 +72,23 @@ export async function POST(req: Request) {
     console.log("Our deleted user details", id);
 
     //call server action to delete user from database
+    const deletedUser = await deleteUser({
+      clerkId: id!,
+    });
+
+    NextResponse.json("deleted successfully", deletedUser);
   }
 
   if (eventType === "user.updated") {
-    const { id } = evt.data;
+    const { id, username, email_addresses } = evt.data;
     console.log("Our updated user details", id);
 
     //call server action to update user on the database
+    await updateUser({
+      clerkId: id,
+      username: username || "MyUser",
+      email: email_addresses[0].email_address,
+    });
   }
 
   return new Response("everything good", { status: 200 });

@@ -12,3 +12,28 @@ export async function createUser(userParams: CreateUserParams) {
     console.log(error);
   }
 }
+
+export async function updateUser(updateUser: UpdateParams) {
+  try {
+    connectDB();
+    const { clerkId } = updateUser;
+
+    await UserModel.findByIdAndUpdate({ clerkId }, { new: true });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteUser(deleteUserParams: DeleteParams) {
+  try {
+    connectDB();
+    const { clerkId } = deleteUserParams;
+    const deletedUser = await UserModel.findOneAndDelete({ clerkId });
+    if (!deletedUser) {
+      throw new Error("user does not exist");
+    }
+    return deletedUser;
+  } catch (error) {
+    console.log(error);
+  }
+}
