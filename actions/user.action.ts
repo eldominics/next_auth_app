@@ -16,9 +16,13 @@ export async function createUser(userParams: CreateUserParams) {
 export async function updateUser(updateUser: UpdateParams) {
   try {
     connectDB();
-    const { clerkId } = updateUser;
+    const { clerkId, username, email } = updateUser;
 
-    await UserModel.findByIdAndUpdate({ clerkId }, { new: true });
+    await UserModel.findByIdAndUpdate(
+      { clerkId },
+      { username, email },
+      { new: true }
+    );
   } catch (error) {
     console.log(error);
   }
