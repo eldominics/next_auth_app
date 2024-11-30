@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser, deleteUser, updateUser } from "@/actions/user.action";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -56,13 +56,8 @@ export async function POST(req: Request) {
 
   if (eventType === "user.created") {
     const { id, username, email_addresses } = evt.data;
-    console.log("within createUser ");
+    console.log("Our User ", id, username, email_addresses);
     //call server action to create user to database
-    await createUser({
-      username: username || "MyUser",
-      email: email_addresses[0].email_address,
-      clerkId: id,
-    });
 
     NextResponse.json("User created");
   }
@@ -72,23 +67,15 @@ export async function POST(req: Request) {
     console.log("Our deleted user details", id);
 
     //call server action to delete user from database
-    const deletedUser = await deleteUser({
-      clerkId: id!,
-    });
 
-    NextResponse.json("deleted successfully", deletedUser);
+    NextResponse.json("deleted successfully");
   }
 
   if (eventType === "user.updated") {
     const { id, username, email_addresses } = evt.data;
-    console.log("Our updated user details", id);
+    console.log("Our updated user details", id, username, email_addresses);
 
     //call server action to update user on the database
-    await updateUser({
-      clerkId: id,
-      username: username || "MyUser",
-      email: email_addresses[0].email_address,
-    });
   }
 
   return new Response("everything good", { status: 200 });
