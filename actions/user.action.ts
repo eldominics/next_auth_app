@@ -32,7 +32,7 @@ export async function updateUser(updateParams: UpdateUserParams) {
   try {
     await connectDB();
     const { clerkId, email, username, picture } = updateParams;
-    await UserModel.findByIdAndUpdate(
+    await UserModel.findOneAndUpdate(
       { clerkId },
       { $set: { email, username, picture } },
       { new: true }
