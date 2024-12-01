@@ -60,14 +60,14 @@ export async function POST(req: Request) {
     console.log("Our User is", id, username, email_addresses);
     //call server action to create user to database
 
-    await createUser({
+    const userCreated = await createUser({
       clerkId: id,
       username: username || "MyUser",
       email: email_addresses[0].email_address,
       picture: image_url,
     });
 
-    NextResponse.json("User created");
+    return NextResponse.json({ message: "User created", userCreated });
   }
 
   if (eventType === "user.deleted") {
